@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unguided</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{randomnumber = AcakNomor()}}
+        <h1> Permainan Tebak Angka </h1>
+         <div>
+            <input type="number" v-model="guess" placeholder="Masukkan Angka"/>
+            <button @click="cekAngka(guess)"> Submit </button>
+            <p>
+                <span v-if="decide == 1">
+                    Tebakan anda benar
+                </span>
+                <span v-else>
+                    Tebakan anda Salah
+                </span>
+            </p>
+         </div>
+    </div>
+
+<br>
+<br>
+<br>
+
+    <div id="datadiri">
+        <p>
+            {{ bio.nama }} || {{ bio.npm }} || Kelas {{ bio.kelas }}
+        </p>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            guess: 0,
+            randomnumber: 0,
+            counter: 0,
+            decide: 0
+        },
+        methods: {
+            AcakNomor: function(){
+                return Math.floor(Math.random() * (10 - 1 + 1)) + 1 ;
+            },
+            cekAngka: function(guess){
+                if(guess==randomnumber)
+                this.decide=1;
+                else
+                this.decide=2;
+            }
+        }
+    })
+
+
+    new Vue({
+        el: "#datadiri",
+        data: {
+            bio: {
+                nama: 'Agung C R',
+                npm: 180709726,
+                kelas: 'C'
+            }
+        },
+    });
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
