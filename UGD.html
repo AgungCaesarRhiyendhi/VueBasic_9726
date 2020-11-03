@@ -8,65 +8,104 @@
 </head>
 <body>
     <div id="app">
-        {{randomnumber = AcakNomor()}}
-        <h1> Permainan Tebak Angka </h1>
-         <div>
-            <input type="number" v-model="guess" placeholder="Masukkan Angka"/>
-            <button @click="cekAngka(guess)"> Submit </button>
-            <p>
-                <span v-if="decide == 1">
-                    Tebakan anda benar
-                </span>
-                <span v-else>
-                    Tebakan anda Salah
-                </span>
-            </p>
-         </div>
+        <form name="form">
+            <div v-if="decide == '0'">
+                <h1> Tebak Angka</h1>
+                <br>
+                <p>Angka Benar {{ randomnumber }}</p>
+                <input v-model="guess" type="text" name="guess"/>
+                <input type="button" @click="cekAngka()" value="Cek Angka" />
+            </div>
+            <div v-if="decide == '1'">
+                <h1> Tebak Angka</h1>
+                <br>
+                <p>Angka Benar {{ randomnumber }}</p>
+                <p>Tebakan Anda Benar</p>
+                <input type="button" @click="muatulang()" value="Cek Angka"/>
+            </div>
+            <div v-if="decide == '2'">
+                <h1> Tebak Angka</h1>
+                <br>
+                <p>Angka Benar {{ randomnumber }}</p>
+                <p>Tebakan Anda salah COba lagi!!</p>
+                <p>Sisa percobaan {{ 3 - counter }} lagi</p>
+                <input v-model="guess" type="text" name="guess"/>
+                <input type="button" @click="cekAngka()" value="Main Lagi" />
+            </div>
+            <div v-if="decide == '3'">
+                <h1> Tebak Angka</h1>
+                <br>
+                <p>Angka Benar {{ randomnumber }}</p>
+                <p>Sisa percobaan {{ 3 - counter }} lagi</p>
+                <p>Kesempatanmu Sudah habis</p>
+                <input type="button" @click="muatulang()" value="Main Lagi"/>
+            </div>
+        </form>
     </div>
 
 <br>
 <br>
 <br>
-
+<!-- 
     <div id="datadiri">
         <p>
             {{ bio.nama }} || {{ bio.npm }} || Kelas {{ bio.kelas }}
         </p>
-    </div>
+    </div> -->
 </body>
 <script>
-    new Vue({
+    let app = new Vue({
         el: "#app",
         data: {
-            guess: 0,
+            guess: "",
             randomnumber: 0,
             counter: 0,
-            decide: 0
-        },
-        methods: {
-            AcakNomor: function(){
-                return Math.floor(Math.random() * (10 - 1 + 1)) + 1 ;
-            },
-            cekAngka: function(guess){
-                if(guess==randomnumber)
-                this.decide=1;
-                else
-                this.decide=2;
-            }
-        }
-    })
-
-
-    new Vue({
-        el: "#datadiri",
-        data: {
+            decide: "0",
             bio: {
                 nama: 'Agung C R',
                 npm: 180709726,
                 kelas: 'C'
             }
         },
+        methods: {
+            AcakNomor: function(){
+                this.randomnumber = Math.floor(Math.random() * (10 - 1 + 1)) + 1 ;
+            },
+
+            cekAngka: function(guess){
+                if(this.randomnumber == 0) this.AcakNomor();
+
+                let num = parseInt(this.guess);
+                this.guess = "";
+                num = Math.ceil(num);
+                if(num > 0 && num < 11){
+                    this.counter++;
+                    if(num == this.randomnumber){
+                        this.decide = "1";
+                    }else{
+                        if(this.counter == 3) {
+                            this.decide = "3"
+                        }else{
+                            this.decide = "2"
+                        }
+                    }
+                    form.reset();
+                }else{
+                    
+                    form.reset();
+                }
+            },
+
+            muatulang: function(){
+                this.decide = "0";
+                this.AcakNomor();
+                this.counter = 0;
+            }
+        }
     });
+
+
+    app.AcakNomor();
 </script>
 </html>
 
