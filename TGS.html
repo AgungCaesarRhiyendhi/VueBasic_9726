@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" contents="width=device-width initial-scale=1.0"/>
+    <title>TGS</title>
+    <script src="vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <style>
+        .center{
+            width: 60%;
+            border: 5px solid #000000;
+            padding: 10px;
+        }
+        table,thead, tbody{
+            background-color: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="center">
+        <form>
+            <div class="form-group">
+                <label for="formGroupExampleInput">Nama To-do</label>
+                <input v-model="data1" type="text" class="form-control" id="formGroupExampleInput" placeholder="Masukkan Tujuan">
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">Catatan</label>
+                <input v-model="data2" type="text" class="form-control" id="formGroupExampleInput2" placeholder="Masukkan Catatan">
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput3">Prioritas</label>
+                <select v-model="data3" class="custom-select" @click="cekInput">
+                    <option disabled value="">Select Option</option>
+                    <option>Penting</option>
+                    <option>Biasa</option>
+                    <option>Tidak Penting</option>
+                </select>
+            </div>
+            <button type="button" @click="addList">Add</button>
+            <button type="button" @click="removeAll">Remove All</button>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nama To-do</th>
+                    <th>Catatan</th>
+                    <th>Prioritas</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(lists, index) in full_list" :key="lists.id">
+                    <td>{{lists.data1}}</td>
+                    <td>{{lists.data2}}</td>
+                    <td>{{lists.data3}}</td>
+                    <td><button type="button" class="btn btn-danger" @click="remove(lists.id)">X</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer>
+            <p>{{ nama }} || {{ npm }} || {{ kelas }}</p>
+        </footer>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data:{
+            nama: "Agung Caesar Rhiyendhi",
+            npm: "180709726",
+            kelas: "Kelas C",
+            data1: "",
+            data2: "",
+            data3: "",
+            full_list: [],
+            valuedata3: false,
+            counter: 1,
+        },
+        methods: {
+            addList(){
+                if(this.valuedata3){
+                    this.full_list.push(
+                        {id: this.counter,
+                        data1: this.data1,
+                        data2: this.data2,
+                        data3: this.data3}
+                    )
+                    this.counter++;
+                }
+            },
+            remove(id){
+                for(index = 0; index < this.full_list.length; index++)
+                    if(this.full_list[index].id == id){
+                        this.$delete(this.full_list, index);
+                        break;
+                    }
+            },
+            cekInput(){
+                if(this.data3 != ""){
+                    this.valuedata3 = true;
+                }
+            },
+            removeAll(){
+                this.full_list=[]
+            },
+        }
+    });
+</script>
+</html>
